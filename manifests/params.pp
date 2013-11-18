@@ -84,7 +84,7 @@ class monit::params {
               $default_conf_tpl = 'monit.default.conf.ubuntu.saucy.erb'
             }
             default: {
-              fail("Unsupported lsbdistid:${::lsbdistid}/${::lsbdistrelease}")
+              $default_conf_tpl = 'monit.default.conf.ubuntu.quantal.erb'
             }
           }
         }
