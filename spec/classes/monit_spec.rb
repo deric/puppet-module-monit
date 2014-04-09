@@ -1,6 +1,30 @@
 require 'spec_helper'
 
 describe 'monit', :type => :class do
+
+  shared_examples 'debian-monit' do |os, codename, status|
+    let(:facts) {{
+      :operatingsystem => os,
+      :osfamily => 'Debian',
+      :lsbdistcodename => codename,
+    }}
+    let(:title) { 'monit-basic' }
+
+    it 'should have service status' do
+      should contain_service('monit').with({
+        'hasstatus' => status,
+      })
+    end
+
+    it 'should compile' do
+      should contain_file('/etc/monit/monitrc')
+      should contain_file('/etc/monit/conf.d')
+      should contain_file('/etc/logrotate.d/monit')
+      should contain_service('monit')
+    end
+  end
+
+
   context "osfamily = RedHat" do
     let :facts do
       {
@@ -46,57 +70,10 @@ describe 'monit', :type => :class do
     end
   end
 
-  context "lsbdistcodename = squeeze" do
-    let :facts do
-      {
-        :osfamily        => 'Debian',
-        :operatingsystem => 'Debian',
-        :lsbdistcodename => 'squeeze'
-      }
-    end
-
-    it 'should not have service status' do
-      should contain_service('monit').with({
-        'hasstatus' => false,
-      })
-    end
+  context 'on debian-like system' do
+    it_behaves_like 'debian-monit', 'Debian', 'squeeze', false
+    it_behaves_like 'debian-monit', 'Debian', 'wheezy', true
+    it_behaves_like 'debian-monit', 'Ubuntu', 'precise', true
   end
 
-  context "lsbdistcodename = wheezy" do
-    let :facts do
-      {
-        :osfamily        => 'Debian',
-        :operatingsystem => 'Debian',
-        :lsbdistcodename => 'wheezy'
-      }
-    end
-
-    it 'should have service status' do
-      should contain_service('monit').with({
-        'hasstatus' => true,
-      })
-    end
-  end
-
-  context "osfamily = Debian" do
-    let :facts do
-      {
-        :osfamily        => 'Debian',
-        :lsbdistid       => 'Debian',
-        :kernel          => 'Linux',
-        :operatingsystem => 'Debian',
-      }
-    end
-
-    context "default usage (osfamily = Debian)" do
-      let(:title) { 'monit-basic' }
-
-      it 'should compile' do
-        should contain_file('/etc/monit/monitrc')
-        should contain_file('/etc/monit/conf.d')
-        should contain_file('/etc/logrotate.d/monit')
-        should contain_service('monit')
-      end
-    end
-  end
 end
