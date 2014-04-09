@@ -1,0 +1,7 @@
+.librarian/*
+.tmp/*
+*.log
+*.tmp
+spec/fixtures/*
+pkg/*
+
