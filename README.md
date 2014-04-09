@@ -50,10 +50,11 @@ Note that the name needs to be the same as an init script in `/etc/init.d`:
 monit::monitor { "ssh":
   pidfile => "/var/run/sshd.pid",
 }
+```
 
 You can specify a IP port to check if you're running a network process:
 
-```nginx
+```puppet
 monit::monitor { "nginx":
   pidfile => "/var/run/nginx.pid",
   ip_port => 22,
