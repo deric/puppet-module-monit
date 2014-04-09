@@ -1,0 +1,8 @@
+name    'deric-monit'
+version '0.1.0'
+source 'https://github.com/deric/puppet-module-monit'
+author 'deric'
+license 'Apache License, Version 2.0'
+summary 'Module for managing monit installation'
+description 'Monit.'
+project_page 'https://github.com/deric/puppet-module-monit'
