@@ -265,7 +265,7 @@ describe 'monit::monitor', :type => :define do
         should contain_file('/etc/monit/conf.d/monit-monitor-uidgid.conf').with_content(
           "check process monit-monitor-uidgid with pidfile /var/run/monit.pid\n" +
           "  start program = \"/bin/start_my_app\" as uid \"www-data\" and gid \"users\"\n" +
-          "  stop program  = \"/bin/stop_my_app\"\n" +
+          "  stop program  = \"/bin/stop_my_app\" as uid \"www-data\" and gid \"users\"\n" +
           "  group monit-monitor-uidgid\n"
         )
       end
